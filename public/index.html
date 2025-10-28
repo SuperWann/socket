@@ -1,22 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>OmeTV Simple Clone</title>
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <script src="https://unpkg.com/simple-peer/simplepeer.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmeTV Mini</title>
   <style>
-    video { width: 45%; margin: 5px; background: #000; }
-    #controls { margin-top: 10px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .video-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      max-width: 1200px;
+    }
+    
+    .video-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+    
+    video { 
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16/9;
+      border-radius: 15px;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      object-fit: cover;
+    }
+    
+    .video-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.7);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .status {
+      margin: 10px 0;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 25px;
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .status.connected {
+      background: rgba(76, 175, 80, 0.3);
+    }
+    
+    .status.waiting {
+      background: rgba(255, 193, 7, 0.3);
+    }
+    
+    button { 
+      padding: 15px 40px;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(0,0,0,0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .video-container {
+        flex-direction: column;
+      }
+      
+      .video-wrapper {
+        width: 100%;
+        max-width: none;
+      }
+      
+      button {
+        padding: 12px 30px;
+        font-size: 16px;
+      }
+    }
+    
+    /* Indicator for video state */
+    .video-wrapper.active::after {
+      content: '🟢';
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 20px;
+    }
+    
+    .video-wrapper.inactive::after {
+      content: '🔴';
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 20px;
+    }
   </style>
 </head>
 <body>
-  <h2>OmeTV Simple</h2>
-  <video id="localVideo" autoplay muted></video>
-  <video id="remoteVideo" autoplay></video>
-  <div id="controls">
-    <button id="nextBtn">Next Random</button>
+  <h1>🎥 OmeTV Mini</h1>
+  
+  <div class="status" id="status">
+    <span class="loading"></span> Menghubungkan...
   </div>
+  
+  <div class="video-container">
+    <div class="video-wrapper" id="localWrapper">
+      <div class="video-label">👤 Kamu</div>
+      <video id="localVideo" autoplay playsinline muted></video>
+    </div>
+    
+    <div class="video-wrapper" id="remoteWrapper">
+      <div class="video-label">👥 Stranger</div>
+      <video id="remoteVideo" autoplay playsinline></video>
+    </div>
+  </div>
+  
+  <button id="nextBtn">Next 👥</button>
+
+  <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
