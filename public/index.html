@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OmeTV Simple Clone</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="https://unpkg.com/simple-peer/simplepeer.min.js"></script>
+  <style>
+    video { width: 45%; margin: 5px; background: #000; }
+    #controls { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>OmeTV Simple</h2>
+  <video id="localVideo" autoplay muted></video>
+  <video id="remoteVideo" autoplay></video>
+  <div id="controls">
+    <button id="nextBtn">Next Random</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
