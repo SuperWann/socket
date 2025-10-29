@@ -1,5 +1,5 @@
 // script.js
-const NGROK_URL = 'https://9bf89d4f3cf1.ngrok-free.app'; // Ganti dengan URL kamu
+const NGROK_URL = 'https://superwann.github.io/socket/'; // Ganti dengan URL kamu
 
 const socket = io(NGROK_URL, {
     transports: ['websocket', 'polling'],
