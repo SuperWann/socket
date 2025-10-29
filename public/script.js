@@ -1,5 +1,5 @@
 // script.js
-const NGROK_URL = 'https://socket-pearl-delta.vercel.app/'; // Ganti dengan URL kamu
+const NGROK_URL = 'https://ometv-mini.onrender.com/'; // Ganti dengan URL kamu
 
 const socket = io(NGROK_URL, {
     transports: ['websocket', 'polling'],
